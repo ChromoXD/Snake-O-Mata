@@ -1,20 +1,23 @@
 #include <raylib.h>
 #include <iostream>
 #include <glad.h>
-#include <GLFW/glfw3.h>
 #include "main.hpp"
+#include <vector>
 
 #define GLSL_Version 430
-#include <rlgl.h>
 
 int main(int argc, char const *argv[])
 {
-    const char *Title{"neural cellular automata"};
+    const char *Title{"neural cellular SnakeOmata"};
     const char *fragShader{LoadFileText(Location["Fragment_Shader"])};
     const char *vertShader{LoadFileText(Location["Vertex_Shader"])};
     const char *compShader{LoadFileText(Location["Compute_Shader"])};
 
+    Snake snake;
+    //snake.snakeBody.push_back([0,0]);
+
     InitWindow(width, height, Title);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     glEnable(GL_CULL_FACE);
 
@@ -23,7 +26,7 @@ int main(int argc, char const *argv[])
     glGenBuffers(1, &EBO);
     glGenVertexArrays(1, &VAO);
 
-    glBindVertexArray(VAO);
+    {glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(Triangle), Triangle, GL_STATIC_DRAW);
@@ -35,26 +38,31 @@ int main(int argc, char const *argv[])
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
 
-    glBindVertexArray(0);
+    glBindVertexArray(0);}
 
+    {
+        ComputeShader = CreateShader(compShader, GL_COMPUTE_SHADER, "COMPUTE_SHADER");
+        ComputeProgram = glCreateProgram();
+        glAttachShader(ComputeProgram, ComputeShader);
+    
+        GraphicsProgram = glCreateProgram();
+    
+        FragmentShader = CreateShader(fragShader, GL_FRAGMENT_SHADER, "FRAGMENT_SHADER");
+        VertexShader = CreateShader(vertShader, GL_VERTEX_SHADER, "VERTEX_SHADER");
+    
+        glAttachShader(GraphicsProgram, FragmentShader);
+        glAttachShader(GraphicsProgram, VertexShader);
+    
+        glLinkProgram(GraphicsProgram);
+        glLinkProgram(ComputeProgram);
+    
+        glUseProgram(GraphicsProgram);
 
-    GLuint ComputeShader = CreateShader(compShader, GL_COMPUTE_SHADER, "COMPUTE_SHADER");
-    GLuint ComputeProgram = glCreateProgram();
-    glAttachShader(ComputeProgram, ComputeShader);
+        GLuint SnakePos;
+        glUniform2fv();
 
-    GLuint GraphicsProgram = glCreateProgram();
-
-    GLuint FragmentShader = CreateShader(fragShader, GL_FRAGMENT_SHADER, "FRAGMENT_SHADER");
-    GLuint VertexShader = CreateShader(vertShader, GL_VERTEX_SHADER, "VERTEX_SHADER");
-
-    glAttachShader(GraphicsProgram, FragmentShader);
-    glAttachShader(GraphicsProgram, VertexShader);
-
-    glLinkProgram(GraphicsProgram);
-    glLinkProgram(ComputeProgram);
-
-    glUseProgram(GraphicsProgram);
-    glUseProgram(ComputeProgram);
+        glUseProgram(ComputeProgram);
+    }
 
     while (!WindowShouldClose())
     {
@@ -69,15 +77,20 @@ int main(int argc, char const *argv[])
         EndDrawing();
     }
 
-    glDeleteProgram(ComputeProgram);
-    glDeleteProgram(GraphicsProgram);
-    UnloadFileText((char *)compShader);
-    UnloadFileText((char *)fragShader);
-    UnloadFileText((char *)vertShader);
-    glDeleteShader(ComputeShader);
-    glDeleteShader(FragmentShader);
-    glDeleteShader(VertexShader);
-    CloseWindow();
+    {
+        glDeleteVertexArrays(1, &VAO);
+        glDeleteBuffers(1, &VBO);
+        glDeleteBuffers(1, &EBO);
+        glDeleteProgram(ComputeProgram);
+        glDeleteProgram(GraphicsProgram);
+        UnloadFileText((char *)compShader);
+        UnloadFileText((char *)fragShader);
+        UnloadFileText((char *)vertShader);
+        glDeleteShader(ComputeShader);
+        glDeleteShader(FragmentShader);
+        glDeleteShader(VertexShader);
+        CloseWindow();
+    }
 
     return 0;
 }
