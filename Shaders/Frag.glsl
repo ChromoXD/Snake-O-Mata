@@ -1,6 +1,11 @@
 #version 430 core
 
 in vec4 FragCord;
+layout(std430, binding = 1) buffer SnakeBody
+{
+    int data_SSBO[];
+};
+
 uniform vec2 SnakePos;
 
 out vec4 FragColor;
@@ -16,6 +21,10 @@ void main(){
     else
     {
         Pixel_color  = vec4(0.255, 0.267, 0.294, 1.0);
+    }
+
+    if((floor(gl_FragCoord.x/25)) == data_SSBO[0] && (floor(gl_FragCoord.y/25)) == data_SSBO[1]){
+        Pixel_color  = vec4(0.875, 0.847, 0.784, 1.0);
     }
 
     FragColor = Pixel_color;

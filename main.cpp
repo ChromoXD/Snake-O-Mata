@@ -13,53 +13,59 @@ int main(int argc, char const *argv[])
     const char *vertShader{LoadFileText(Location["Vertex_Shader"])};
     const char *compShader{LoadFileText(Location["Compute_Shader"])};
 
+    GLuint SnakePos;
+
     Snake snake;
-    //snake.snakeBody.push_back([0,0]);
+    snake.snakeBody.insert(snake.snakeBody.end(), {0.0, 0.0});
 
     InitWindow(width, height, Title);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     glEnable(GL_CULL_FACE);
 
-    GLuint VBO, VAO, EBO;
+    GLuint VBO, VAO, EBO, SSBO;
+    glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
-    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &SSBO);
 
-    {glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(Triangle), Triangle, GL_STATIC_DRAW);
-    
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indeces), Indeces, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
+    {
+        glBindVertexArray(VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBindBuffer(GL_SHADER_STORAGE_BUFFER, SSBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBufferData(GL_SHADER_STORAGE_BUFFER, snake.snakeBody.size() * sizeof(float), snake.snakeBody.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(Triangle), Triangle, GL_STATIC_DRAW);
 
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
+        glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, SSBO);
 
-    glBindVertexArray(0);}
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indeces), Indeces, GL_STATIC_DRAW);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
+
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+
+        glBindVertexArray(0);
+    }
 
     {
         ComputeShader = CreateShader(compShader, GL_COMPUTE_SHADER, "COMPUTE_SHADER");
         ComputeProgram = glCreateProgram();
         glAttachShader(ComputeProgram, ComputeShader);
-    
+
         GraphicsProgram = glCreateProgram();
-    
+
         FragmentShader = CreateShader(fragShader, GL_FRAGMENT_SHADER, "FRAGMENT_SHADER");
         VertexShader = CreateShader(vertShader, GL_VERTEX_SHADER, "VERTEX_SHADER");
-    
+
         glAttachShader(GraphicsProgram, FragmentShader);
         glAttachShader(GraphicsProgram, VertexShader);
-    
+
         glLinkProgram(GraphicsProgram);
         glLinkProgram(ComputeProgram);
-    
-        glUseProgram(GraphicsProgram);
 
-        GLuint SnakePos;
-        glUniform2fv();
+        glUseProgram(GraphicsProgram);
 
         glUseProgram(ComputeProgram);
     }
@@ -68,8 +74,6 @@ int main(int argc, char const *argv[])
     {
         BeginDrawing();
         glClear(GL_COLOR_BUFFER_BIT);
-
-        glBindVertexArray(VAO);
         glUseProgram(GraphicsProgram);
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

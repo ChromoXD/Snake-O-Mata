@@ -1,6 +1,7 @@
 #pragma once
 #include <unordered_map>
 #include <vector>
+#include <array>
 #include <string>
 
 unsigned int CreateShader(const char *ShaderSource, int SHADER_TYPE, std::string type);
@@ -38,7 +39,7 @@ char log_info[512];
 
 struct Snake
 {
-    std::vector<int[2]> snakeBody;
+    std::vector<float> snakeBody;
     void UpdateSnake();
 };
 
