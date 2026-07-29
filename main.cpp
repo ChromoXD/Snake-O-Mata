@@ -16,8 +16,12 @@ int main(int argc, char const *argv[])
     GLuint SnakePos;
 
     Snake snake;
-    snake.snakeBody.insert(snake.snakeBody.end(), {0.0, 0.0});
+    snake.snakeBody.insert(snake.snakeBody.end(), {10.0, 1.0});
+    snake.snakeBody.insert(snake.snakeBody.end(), {9.0, 1.0});
+    snake.snakeBody.insert(snake.snakeBody.end(), {8.0, 1.0});
+    snake.snakeBody.insert(snake.snakeBody.end(), {7.0, 1.0});
 
+    SetConfigFlags(FLAG_WINDOW_ALWAYS_RUN);
     InitWindow(width, height, Title);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -70,8 +74,14 @@ int main(int argc, char const *argv[])
         glUseProgram(ComputeProgram);
     }
 
+    SetTargetFPS(FPS);
+
     while (!WindowShouldClose())
     {
+        UserInput(&snake.snake_direction_state);
+        snakeMovement(&snake);
+
+        glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, snake.snakeBody.size() * sizeof(float), snake.snakeBody.data());
         BeginDrawing();
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(GraphicsProgram);
@@ -119,4 +129,45 @@ char *Error_logger(GLuint Shader, std::string ShaderType)
         std::cout << "ERROR::SHADER::" << ShaderType << "::COMPILATION_FAILED\n";
     }
     return log_info;
+}
+
+void UserInput(char *direction)
+{
+    if (IsKeyDown(KEY_W))
+        *direction = 'w';
+    if (IsKeyDown(KEY_A))
+        *direction = 'a';
+    if (IsKeyDown(KEY_S))
+        *direction = 's';
+    if (IsKeyDown(KEY_D))
+        *direction = 'd';
+}
+
+void snakeMovement(Snake *snake)
+{
+    for (size_t i = snake->snakeBody.size() / 2 - 1; i > 0; i--)
+    {
+        snake->snakeBody[i * 2] = snake->snakeBody[i * 2 - 2];
+        snake->snakeBody[i * 2 + 1] = snake->snakeBody[i * 2 - 1];
+    }
+
+
+    switch (snake->snake_direction_state)
+    {
+    case 'w':
+        snake->snakeBody[1] += 1.0f;
+        break;
+    case 'a':
+        snake->snakeBody[0] -= 1.0f;
+        break;
+    case 's':
+        snake->snakeBody[1] -= 1.0f;
+        break;
+    case 'd':
+        snake->snakeBody[0] += 1.0f;
+        break;
+
+    default:
+        break;
+    }
 }

@@ -3,7 +3,7 @@
 in vec4 FragCord;
 layout(std430, binding = 1) buffer SnakeBody
 {
-    int data_SSBO[];
+    float data_SSBO[];
 };
 
 uniform vec2 SnakePos;
@@ -23,8 +23,10 @@ void main(){
         Pixel_color  = vec4(0.255, 0.267, 0.294, 1.0);
     }
 
-    if((floor(gl_FragCoord.x/25)) == data_SSBO[0] && (floor(gl_FragCoord.y/25)) == data_SSBO[1]){
-        Pixel_color  = vec4(0.875, 0.847, 0.784, 1.0);
+    for(int x = 0; x < data_SSBO.length()/2; x++){
+        if((floor(gl_FragCoord.x/25)) == data_SSBO[2*x] && (floor(gl_FragCoord.y/25)) == data_SSBO[2*x+1]){
+            Pixel_color  = vec4(0.875, 0.847, 0.784, 1.0);
+        }
     }
 
     FragColor = Pixel_color;

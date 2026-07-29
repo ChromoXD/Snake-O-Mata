@@ -6,6 +6,7 @@
 
 unsigned int CreateShader(const char *ShaderSource, int SHADER_TYPE, std::string type);
 char *Error_logger(GLuint Shader, std::string ShaderType);
+void UserInput (char * direction);
 
 GLuint ComputeShader;
 GLuint ComputeProgram;
@@ -40,10 +41,14 @@ char log_info[512];
 struct Snake
 {
     std::vector<float> snakeBody;
-    void UpdateSnake();
+    char snake_direction_state = 'd';
 };
 
 
 int Table[768]{1};
 
 int food[2]{0,0};
+
+int FPS{5};
+
+void snakeMovement (Snake * snake);
