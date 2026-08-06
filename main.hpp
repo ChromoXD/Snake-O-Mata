@@ -49,6 +49,6 @@ int Table[768]{1};
 
 int food[2]{0,0};
 
-int FPS{5};
+int FPS{10};
 
 void snakeMovement (Snake * snake);

@@ -133,14 +133,11 @@ char *Error_logger(GLuint Shader, std::string ShaderType)
 
 void UserInput(char *direction)
 {
-    if (IsKeyDown(KEY_W))
-        *direction = 'w';
-    if (IsKeyDown(KEY_A))
-        *direction = 'a';
-    if (IsKeyDown(KEY_S))
-        *direction = 's';
-    if (IsKeyDown(KEY_D))
-        *direction = 'd';
+    
+    if (IsKeyPressed(KEY_W) && *direction != 's') *direction = 'w';
+    if (IsKeyPressed(KEY_A) && *direction != 'd') *direction = 'a';
+    if (IsKeyPressed(KEY_S) && *direction != 'w') *direction = 's';
+    if (IsKeyPressed(KEY_D) && *direction != 'a') *direction = 'd';
 }
 
 void snakeMovement(Snake *snake)
