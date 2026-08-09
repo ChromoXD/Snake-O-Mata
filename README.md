@@ -12,3 +12,8 @@ This Project was just for me to learn about OpenGL functions, and how shaders wo
  - Add ML agent/model
  - Train multiple ML agent/model
  - Add HeightMap and Energy system
+
+ ---
+## How to run:
+ - download this folder and extract it
+ - run the main.exe file 
