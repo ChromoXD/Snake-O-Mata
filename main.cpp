@@ -1,9 +1,11 @@
 #include <raylib.h>
 #include <iostream>
 #include <glad.h>
-#include "main.hpp"
+
 #include <vector>
 #include <chrono>
+
+#include "main.hpp"
 #include "classes_and_functions/Shader_Function.hpp"
 #include "classes_and_functions/Game_Class.hpp"
 
@@ -13,7 +15,7 @@ Game game(15);
 Game::Snake snake;
 ShaderFunctions SF;
 
-int main(int argc, char const *argv[])
+int main()
 {
     const char *Title{"neural cellular SnakeOmata"};
     const char *fragShader{LoadFileText(Location["Fragment_Shader"])};
@@ -42,14 +44,11 @@ int main(int argc, char const *argv[])
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(Triangle), Triangle, GL_STATIC_DRAW);
-
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indeces), Indeces, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)0);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
-
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
-
     glBindVertexArray(0);
 
     GraphicsProgram = glCreateProgram();
@@ -98,38 +97,27 @@ int main(int argc, char const *argv[])
         EndDrawing();
     }
 
-    {
-        glDeleteVertexArrays(1, &VAO);
-        glDeleteBuffers(1, &VBO);
-        glDeleteBuffers(1, &EBO);
-        glDeleteProgram(GraphicsProgram);
-        UnloadFileText((char *)fragShader);
-        UnloadFileText((char *)vertShader);
-        glDeleteShader(FragmentShader);
-        glDeleteShader(VertexShader);
-        CloseWindow();
-    }
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
+    glDeleteProgram(GraphicsProgram);
+    UnloadFileText((char *)fragShader);
+    UnloadFileText((char *)vertShader);
+    glDeleteShader(FragmentShader);
+    glDeleteShader(VertexShader);
+    CloseWindow();
 
     return 0;
 }
 
 void UserInput(char *direction, double time)
 {
-
     if (IsKeyPressed(KEY_W) && *direction != 's' && *direction != 'w')
-    {
         *direction = 'w';
-    }
     if (IsKeyPressed(KEY_A) && *direction != 'd' && *direction != 'a')
-    {
         *direction = 'a';
-    }
     if (IsKeyPressed(KEY_S) && *direction != 'w' && *direction != 's')
-    {
         *direction = 's';
-    }
     if (IsKeyPressed(KEY_D) && *direction != 'a' && *direction != 'd')
-    {
         *direction = 'd';
-    }
 }

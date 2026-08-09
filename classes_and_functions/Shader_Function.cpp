@@ -3,16 +3,16 @@
 #include <iostream>
 
 GLuint ComputeShader,
-       ComputeProgram, 
-       GraphicsProgram, 
-       FragmentShader, 
+       ComputeProgram,
+       GraphicsProgram,
+       FragmentShader,
        VertexShader;
 
-GLuint VBO, 
-       VAO, 
-       EBO, 
-       Snakebody, 
-       Food, 
+GLuint VBO,
+       VAO,
+       EBO,
+       Snakebody,
+       Food,
        Score,
        SnakeLength;
 
