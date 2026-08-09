@@ -1,4 +1,14 @@
-# Work in progress,
-## Devlog 1: 
-### - Set up a basic window to draw on
-### - Made a grid board
+# A Simple Snake Project
+
+## An implementation Snake Using Shaders and Along with OpenGL and raylib
+---
+
+This Project was just for me to learn about OpenGL functions, and how shaders work,
+
+--- 
+
+## Future Plans:
+ - Seperate Renderer
+ - Add ML agent/model
+ - Train multiple ML agent/model
+ - Add HeightMap and Energy system
