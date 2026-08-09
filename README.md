@@ -16,4 +16,4 @@ This Project was just for me to learn about OpenGL functions, and how shaders wo
  ---
 ## How to run:
  - download this folder and extract it
- - run the main.exe file 
+ - run the main.exe file in the release folder 
