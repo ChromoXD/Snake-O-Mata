@@ -6,14 +6,20 @@
             "command": "C:/msys64/mingw64/bin/g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
-                "-g",
+                "-O2",
+                "-mwindows",
+
                 "${file}",
                 "${fileDirname}\\classes_and_functions\\Shader_Function.cpp",
                 "${fileDirname}\\classes_and_functions\\Game_Class.cpp",
+
                 "-I", "C:/raylib/raylib/src",
                 "-I", "${fileDirname}",
+
                 "-L", "C:/raylib/raylib/build/raylib",
+
                 "-o", "${fileDirname}\\${fileBasenameNoExtension}.exe",
+
                 "-lraylib",
                 "-lopengl32",
                 "-lgdi32",
