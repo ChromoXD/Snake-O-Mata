@@ -9,9 +9,9 @@ char *Error_logger(GLuint Shader, std::string ShaderType);
 void UserInput(char *direction, double time);
 
 std::unordered_map<std::string, const char *> Location = {
-    {"Fragment_Shader", "X:/aweome/smth/Snake/Shaders/Frag.glsl"},
-    {"Vertex_Shader", "X:/aweome/smth/Snake/Shaders/Vert.glsl"},
-    {"Compute_Shader", "X:/aweome/smth/Snake/Shaders/Comp.glsl"}};
+    {"Fragment_Shader", "Shaders/Frag.glsl"},
+    {"Vertex_Shader", "Shaders/Vert.glsl"},
+    {"Compute_Shader", "Shaders/Comp.glsl"}};
 
 int width{800}, height{600}; //32x24
 

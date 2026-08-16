@@ -6,6 +6,7 @@
             "command": "C:/msys64/mingw64/bin/g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
+                // "-g",
                 "-O2",
                 "-mwindows",
 
@@ -23,7 +24,10 @@
                 "-lraylib",
                 "-lopengl32",
                 "-lgdi32",
-                "-lwinmm"
+                "-lwinmm",
+                "-static",
+                "-static-libgcc",
+                "-static-libstdc++",
             ],
             "options": {
                 "cwd": "C:/msys64/mingw64/bin"
